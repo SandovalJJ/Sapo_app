@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Enfrentamiento;
 use Illuminate\Http\Request;
 use App\Models\Torneo;
 use App\Models\Equipo;
@@ -12,16 +13,20 @@ class torneoController extends Controller
 
     public function show($id_torneo)
 {
-    // Recupera el torneo con el id_torneo proporcionado
     $torneo = Torneo::where('id_torneo', $id_torneo)->first();
-
     if (!$torneo) {
-        // Maneja la situación en la que no se encuentra el torneo
         return redirect()->route('admin')->with('error', 'Torneo no encontrado.');
     }
-
     return view('torneoShow', compact('torneo'));
 }
+
+public function equipos($id_torneo)
+{
+    $torneo = Torneo::find($id_torneo);
+    $equipos = Equipo::where('fk_id_torneo', $id_torneo)->get();
+    return view('torneoShow', ['torneo' => $torneo, 'equipos' => $equipos]);
+}
+
 
 
 public function createTorneo(Request $request){
@@ -36,12 +41,7 @@ public function createTorneo(Request $request){
     return redirect()->back();
 }
 
-public function equipos($id_torneo)
-{
-    $torneo = Torneo::find($id_torneo);
-    $equipos = Equipo::where('fk_id_torneo', $id_torneo)->get();
-    return view('torneoShow', ['torneo' => $torneo, 'equipos' => $equipos]);
-}
+
 
 public function crearEquiposAlAzar()
 {

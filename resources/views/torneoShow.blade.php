@@ -31,15 +31,16 @@
             <li class="nav-item">
                 <a class="nav-link" href="\admin" style="color: green;">Torneos</a>
             </li>
-            <li>
-                <a class="nav-link active" href="{{ route('equipos', ['id_torneo' => $torneo->id_torneo]) }}" class="nav-link active" style="background-color: #198754;">Equipos</a>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ route('enfrentamientos', ['id_torneo' => $torneo->id_torneo]) }}" class="text-success text-decoration-none"" style="background-color: #198754;">Enfrentamientos</a>
             </li>
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" style="color: green;">Opciones</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="/participantes">Solicitudes</a></li>
                     <li><a class="dropdown-item" href="/aceptados">Participantes</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#">Separated link</a></li>
                 </ul>

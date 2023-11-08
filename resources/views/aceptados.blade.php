@@ -28,7 +28,7 @@
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="/participantes">Solicitudes</a></li>
                   <li><a class="dropdown-item" href="/aceptados">Participantes</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  <li><a class="dropdown-item" href="/enfrentamientos">Enfrentamientos</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#">Separated link</a></li>
                 </ul>

@@ -55,8 +55,6 @@ class equipoController extends Controller
 }
 
     
-    
-
 public function participantes($id_equipo)
 {
     $equipo = Equipo::find($id_equipo);

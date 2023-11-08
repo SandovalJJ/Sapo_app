@@ -67,10 +67,10 @@
                                     @if ($enfrentamiento->resultado === null)
                                         <tr>
                                             <td>{{ $enfrentamiento->id_enfrentamiento }}</td>
-                                            <td>{{ $enfrentamiento->fk_id_torneo }}</td>
+
                                             <td>{{ $enfrentamiento->id_equipo_local }}</td>
                                             <td>{{ $enfrentamiento->id_equipo_visitante }}</td>
-                                            <td>{{ $enfrentamiento->ronda }}</td>
+
                                             <td>{{ $enfrentamiento->resultado }}</td>
                                         </tr>
                                         @break 
@@ -81,57 +81,8 @@
                     </div>     
               
                 </div>
-                <div class="card m-5">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 border border-success p-2">
-                            <h2>Equipo 1</h2>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="table-success">ID</th>
-                                        <th class="table-success">Nombre</th>
-                                        <th class="table-success">Apellido</th>
-                                        <th class="table-success">Puntos</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- @foreach($participantesVisitante as $participante)
-                        <tr>
-                            <td>{{ $participante->cedula }}</td>
-                            <td>{{ $participante->nombre }}</td>
-                            <td>{{ $participante->apellido }}</td>
-                            <td>{{ $participante->puntos }}</td>
-                        </tr>
-                    @endforeach --}}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-6 border border-primary p-2">
-                            <h2>Equipo 2</h2>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="table-primary">ID</th>
-                                        <th class="table-primary">Nombre</th>
-                                        <th class="table-primary">Apellido</th>
-                                        <th class="table-primary">Puntos</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- @foreach($participantesVisitante as $participante)
-                                    <tr>
-                                        <td>{{ $participante->cedula }}</td>
-                                        <td>{{ $participante->nombre }}</td>
-                                        <td>{{ $participante->apellido }}</td>
-                                        <td>{{ $participante->puntos }}</td>
-                                    </tr>
-                                @endforeach --}}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div> 
+            
+                     
             </div>
         </div>      
             <div class="col-md-4 mb-5">
