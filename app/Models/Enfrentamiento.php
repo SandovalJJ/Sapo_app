@@ -14,14 +14,8 @@ class Enfrentamiento extends Model
         'fk_id_torneo',
         'id_equipo_local',
         'id_equipo_visitante',
-        'ronda',
         'resultado',
     ];
-
-    public function torneo()
-    {
-        return $this->belongsTo(Torneo::class, 'fk_id_torneo');
-    }
 
     public function equipoLocal()
     {
@@ -32,4 +26,14 @@ class Enfrentamiento extends Model
     {
         return $this->belongsTo(Equipo::class, 'id_equipo_visitante');
     }
+
+    public function participantesEquipoLocal()
+{
+    return $this->equipoLocal->participantes();
+}
+
+public function participantesEquipoVisitante()
+{
+    return $this->equipoVisitante->participantes();
+}
 }

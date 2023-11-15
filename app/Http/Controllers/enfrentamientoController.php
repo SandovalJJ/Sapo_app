@@ -3,91 +3,154 @@
 namespace App\Http\Controllers;
 
 use App\Models\Enfrentamiento;
+use Illuminate\Http\Request;
+use App\Models\Torneo;
 use App\Models\Equipo;
 use App\Models\Participante;
-use App\Models\Torneo;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class enfrentamientoController extends Controller
 {
-     
+
+public function mostrarEnfrentamiento($id_enfrentamiento)
+{
+    $enfrentamientoActual = Enfrentamiento::with('equipoLocal.participantes', 'equipoVisitante.participantes')->find($id_enfrentamiento);
+    $enfrentamientos = Enfrentamiento::whereNull('resultado')->get();
+    $resultados = Enfrentamiento::whereNotNull('resultado')
+    ->join('equipos', 'enfrentamientos.resultado', '=', 'equipos.id_equipo')
+    ->where('equipos.estado_equipo', 'CALIFICADO')
+    ->select('equipos.id_equipo') // Selecciona solo la columna id_equipo de la tabla equipos
+    ->distinct() // Asegúrate de que los ID de los equipos sean únicos
+    ->get();
+
+    $todosLosEnfrentamientos = Enfrentamiento::all(); // Asumiendo que no son demasiados para cargar
 
 
-    public function crearEnfrentamientos($id_torneo) {
-        $torneo = Torneo::find($id_torneo);
-        $equipos = Equipo::where('fk_id_torneo', $id_torneo)->get();
+    if (!$enfrentamientoActual) {
+        abort(404);
+    }
+
+    return view('enfrentamientos', compact('enfrentamientoActual', 'todosLosEnfrentamientos', 'enfrentamientos', 'resultados'));
+}
+
+public function crearEnfrentamientos($id_torneo) {
+    $torneo = Torneo::find($id_torneo);
+    // Aquí aseguramos que solo seleccionemos equipos calificados
+    $equipos = Equipo::where('fk_id_torneo', $id_torneo)->where('estado_equipo', 'CALIFICADO')->get();
+    
+    // Aleatorizar la lista de equipos
+    $equiposAleatorios = $equipos->shuffle();
+    
+    // Crear enfrentamientos
+    $equiposDisponibles = $equiposAleatorios->toArray();
+    $equiposEmparejados = [];
+
+    while (count($equiposDisponibles) >= 2) {
+        $indiceLocal = array_rand($equiposDisponibles);
+        $equipoLocal = $equiposDisponibles[$indiceLocal];
+        unset($equiposDisponibles[$indiceLocal]);
+
+        // Buscar un equipo visitante que no haya sido emparejado previamente
+        do {
+            $indiceVisitante = array_rand($equiposDisponibles);
+            $equipoVisitante = $equiposDisponibles[$indiceVisitante];
+        } while (in_array($equipoVisitante['id_equipo'], $equiposEmparejados));
         
-        // Aleatorizar la lista de equipos
-        $equiposAleatorios = $equipos->shuffle();
-        
-        // Crear enfrentamientos
-        $ronda = 1; // Inicializamos la ronda en 1
-        $equiposDisponibles = $equiposAleatorios->toArray();
-        $equiposEmparejados = [];
-    
-        while (count($equiposDisponibles) >= 2) {
-            $indiceLocal = array_rand($equiposDisponibles);
-            $equipoLocal = $equiposDisponibles[$indiceLocal];
-            unset($equiposDisponibles[$indiceLocal]);
-    
-            // Buscar un equipo visitante que no haya sido emparejado previamente
-            do {
-                $indiceVisitante = array_rand($equiposDisponibles);
-                $equipoVisitante = $equiposDisponibles[$indiceVisitante];
-            } while (in_array($equipoVisitante['id_equipo'], $equiposEmparejados));
-            
-            unset($equiposDisponibles[$indiceVisitante]);
-            $equiposEmparejados[] = $equipoLocal['id_equipo'];
-            $equiposEmparejados[] = $equipoVisitante['id_equipo'];
-    
-            // Crear un enfrentamiento entre los dos equipos
-            $enfrentamiento = new Enfrentamiento();
-            $enfrentamiento->fk_id_torneo = $id_torneo; // Reemplaza con el valor correcto del torneo.
-            $enfrentamiento->id_equipo_local = $equipoLocal['id_equipo'];
-            $enfrentamiento->id_equipo_visitante = $equipoVisitante['id_equipo'];
-            $enfrentamiento->ronda = $ronda;
-            $enfrentamiento->save();
-        }
-    
-        // Si queda un equipo sin emparejar en caso de un número impar de equipos
-        if (count($equiposDisponibles) > 0) {
-            $indiceLocal = array_rand($equiposDisponibles);
-            $equipoLocal = $equiposDisponibles[$indiceLocal];
-            unset($equiposDisponibles[$indiceLocal]);
-            $equiposEmparejados[] = $equipoLocal['id_equipo'];
-            $enfrentamiento = new Enfrentamiento();
-            $enfrentamiento->fk_id_torneo = $id_torneo;
-            $enfrentamiento->id_equipo_local = $equipoLocal['id_equipo'];
-            $enfrentamiento->ronda = $ronda;
-            $enfrentamiento->resultado = $equipoLocal['id_equipo'];
-            $enfrentamiento->save();
-        }
-    
-        // Redireccionar a una vista o hacer una respuesta JSON, según tus necesidades
-        return redirect()->back();
-    }
-    
+        unset($equiposDisponibles[$indiceVisitante]);
+        $equiposEmparejados[] = $equipoLocal['id_equipo'];
+        $equiposEmparejados[] = $equipoVisitante['id_equipo'];
 
-       public function enfrentamientos($id_torneo)
-    {
-        $torneo = Torneo::find($id_torneo);
-        $enfrentamientos = Enfrentamiento::where('fk_id_torneo', $id_torneo)->get();
-        $enfrentamientoss = Enfrentamiento::where('fk_id_torneo', $id_torneo)->get();
-        $resultados = Enfrentamiento::where('fk_id_torneo', $id_torneo)->get();
-        return view('enfrentamientos', ['torneo' => $torneo, 'enfrentamientos' => $enfrentamientos, 'enfrentamientoss' => $enfrentamientoss, 'resultados' => $resultados]);
+        // Crear un enfrentamiento entre los dos equipos
+        $enfrentamiento = new Enfrentamiento();
+
+        $enfrentamiento->id_equipo_local = $equipoLocal['id_equipo'];
+        $enfrentamiento->id_equipo_visitante = $equipoVisitante['id_equipo'];
+        $enfrentamiento->save();
     }
 
-    public function index()
-    {     
-        $enfrentamientos = Enfrentamiento::whereNull('resultado')->get();
-        $enfrentamientoss = Enfrentamiento::whereNull('resultado')->get();
-        $enfrentamientoss = $enfrentamientoss->skip(1);
-        $resultados = Enfrentamiento::whereNotNull('resultado')->get();
+    // Si queda un equipo sin emparejar en caso de un número impar de equipos
+    if (count($equiposDisponibles) > 0) {
+        $indiceLocal = array_rand($equiposDisponibles);
+        $equipoLocal = $equiposDisponibles[$indiceLocal];
+        unset($equiposDisponibles[$indiceLocal]);
+        $equiposEmparejados[] = $equipoLocal['id_equipo'];
+        $enfrentamiento = new Enfrentamiento();
 
-        return view('enfrentamientos', compact('enfrentamientos', 'enfrentamientoss', 'resultados'));
+        $enfrentamiento->id_equipo_local = $equipoLocal['id_equipo'];
+        // Suponiendo que un equipo sin emparejar gana automáticamente su "enfrentamiento"
+        $enfrentamiento->resultado = $equipoLocal['id_equipo'];
+        $enfrentamiento->save();
     }
 
- 
+    // Redireccionar a una vista o hacer una respuesta JSON, según tus necesidades
+    return redirect()->back();
+}
+
+
+// Dentro de EnfrentamientoController.php
+
+public function guardarResultados(Request $request, $id_enfrentamiento)
+{
+    $enfrentamiento = Enfrentamiento::with(['equipoLocal', 'equipoVisitante'])->findOrFail($id_enfrentamiento);
+
+    // Sumar y guardar puntos para el equipo local
+    $puntosLocal = array_sum($request->puntos_local);
+    $equipoLocal = $enfrentamiento->equipoLocal;
+    $equipoLocal->puntos += $puntosLocal;
+    $equipoLocal->save();
+
+    // Sumar y guardar puntos para el equipo visitante
+    $puntosVisitante = array_sum($request->puntos_visitante);
+    $equipoVisitante = $enfrentamiento->equipoVisitante;
+    $equipoVisitante->puntos += $puntosVisitante;
+    $equipoVisitante->save();
+
+    // Actualizar puntos de cada participante local sumándolos a los existentes
+    foreach ($request->puntos_local as $cedula => $puntos) {
+        $participante = Participante::findOrFail($cedula);
+        $participante->puntos += $puntos; // Suma los nuevos puntos a los existentes
+        $participante->save();
+    }
+
+    // Actualizar puntos de cada participante visitante sumándolos a los existentes
+    foreach ($request->puntos_visitante as $cedula => $puntos) {
+        $participante = Participante::findOrFail($cedula);
+        $participante->puntos += $puntos; // Suma los nuevos puntos a los existentes
+        $participante->save();
+    }
+
+    // Redirige o devuelve una respuesta según sea necesario
+    return back()->with('success', 'Resultados guardados correctamente.');
+}
+
+
+// Dentro de EnfrentamientoController.php
+
+public function determinarGanador(Request $request, $id_enfrentamiento)
+{
+    $enfrentamiento = Enfrentamiento::with(['equipoLocal', 'equipoVisitante'])->findOrFail($id_enfrentamiento);
+
+    // Compara los puntajes de los equipos
+    if ($enfrentamiento->equipoLocal->puntos > $enfrentamiento->equipoVisitante->puntos) {
+        $ganador = $enfrentamiento->equipoLocal;
+        $perdedor = $enfrentamiento->equipoVisitante;
+    } else if ($enfrentamiento->equipoLocal->puntos < $enfrentamiento->equipoVisitante->puntos) {
+        $ganador = $enfrentamiento->equipoVisitante;
+        $perdedor = $enfrentamiento->equipoLocal;
+    } else {
+        // En caso de empate, puedes decidir cómo manejarlo
+        return back()->with('error', 'Los equipos tienen el mismo puntaje.');
+    }
+
+    // Actualiza el resultado del enfrentamiento
+    $enfrentamiento->resultado = $ganador->id_equipo;
+    $enfrentamiento->save();
+
+    // Descalifica al equipo perdedor
+    $perdedor->estado_equipo = 'descalificado';
+    $perdedor->save();
+
+    return back()->with('success', 'El ganador ha sido determinado y el estado actualizado.');
+}
+
 
 }

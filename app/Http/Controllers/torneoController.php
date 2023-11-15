@@ -27,6 +27,13 @@ public function equipos($id_torneo)
     return view('torneoShow', ['torneo' => $torneo, 'equipos' => $equipos]);
 }
 
+public function enfrentamientos($id_torneo)
+{
+    $torneo = Torneo::find($id_torneo);
+    $equipos = Equipo::where('fk_id_torneo', $id_torneo)->get();
+    return view('torneoShow', ['torneo' => $torneo, 'equipos' => $equipos]);
+}
+
 
 
 public function createTorneo(Request $request){

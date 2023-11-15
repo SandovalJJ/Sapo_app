@@ -32,7 +32,7 @@
                 <a class="nav-link" href="\admin" style="color: green;">Torneos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="{{ route('enfrentamientos', ['id_torneo' => $torneo->id_torneo]) }}" class="text-success text-decoration-none"" style="background-color: #198754;">Enfrentamientos</a>
+               
             </li>
 
             <li class="nav-item dropdown">
@@ -57,14 +57,26 @@
         <div class="card-body">
             <div style="border: 1px solid green; padding: 10px; margin: 10px auto; text-align: center;" class="m-3">
                 <div class="card">
+                    
                     <div class="card-body">
+                        
                         <p style="font-size: 30px; color: green; font-weight: bold;">Torneo {{ $torneo->nombre }} de sapo - Coopserp</p>
+                        
+                        <div class="container">
+                            <div class="d-flex flex-row justify-content-start">
 
-                        <a href="{{ route('generar.equipos', ['id_torneo' => request()->route('id_torneo')]) }}" class="btn btn-success">Generar equipos</a>
+                                <a href="{{ route('generar.equipos', ['id_torneo' => request()->route('id_torneo')]) }}" class="btn btn-success me-3 pd-3">Generar equipos</a>
+                                
+                                <form action="{{ route('crear_enfrentamientos', ['id_torneo' => $torneo->id_torneo]) }}" method="GET">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success">Generar enfrentamientos</button>
+                                </form>
+                                
+                            </div>
 
-
-
-                            
+                        </div>
+                        <br>
+                           
                         <table id="participantes" class="table table-striped" style="width:100%">
                             <thead>
                                 <tr>
@@ -101,8 +113,6 @@
         </div>
 
         <div class="card text-center">
-
-            <a href="https://www.coopserp.com/" class="btn btn-success">Coopserp</a>
           </div>
           
         @endsection
@@ -168,8 +178,6 @@
         </form>
         </div>
     </div>
-
-      <a href="https://www.coopserp.com/" class="btn btn-success">Coopserp</a>
     </div>
   </div>
 

@@ -80,14 +80,10 @@ Route::get('/torneo/{id_torneo}/equipos', [torneoController::class, 'equipos'])-
 Route::get('/generar-equipos/{id_torneo}', [equipoController::class, 'generarEquipos'])->name('generar.equipos');
 Route::get('/equipos/{id_equipo}', [equipoController::class, 'participantes'])->name('participantes');
 
+//RUTAS ENFRENTAMIENTO
 
-
-//RUTAS ENFRENTAMIENTOS
+Route::get('/enfrentamientos/{id}', [enfrentamientoController::class, 'mostrarEnfrentamiento'])->name('enfrentamientos.show');
 Route::get('/crear-enfrentamientos/{id_torneo}', [enfrentamientoController::class, 'crearEnfrentamientos'])->name('crear_enfrentamientos');
-Route::get('/enfrentamientos/{id_torneo}/index', [enfrentamientoController::class, 'index'])->name('enfrentamientos.index');
-Route::get('/torneo/{id_torneo}/enfrentamientos', [enfrentamientoController::class, 'enfrentamientos'])->name('enfrentamientos');
-
-
-
-
+Route::post('/enfrentamientos/{id_enfrentamiento}/guardar', [enfrentamientoController::class, 'guardarResultados'])->name('guardar.resultados');
+Route::post('/enfrentamientos/{id_enfrentamiento}/determinar-ganador', [EnfrentamientoController::class, 'determinarGanador'])->name('determinar.ganador');
 

@@ -1,282 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Torneo sapo - Coopserp</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enfrentamiento de Equipos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .bg-verde {
+            background-color: #4CAF50; /* Un tono de verde */
+        }
+        .bg-amarillo {
+            background-color: #FFEB3B; /* Un tono de amarillo */
+        }
+        .texto-elegante {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+        .navbar-dark .navbar-nav .nav-link {
+            color: #FFEB3B; /* Color de texto amarillo para los links */
+        }
+        .navbar-dark .navbar-brand {
+            color: #4CAF50; /* Color verde para el brand */
+        }
+        .card-participante {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .sidebar-link {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            color: #333;
+            text-decoration: none;
+        }
+        .sidebar-link:hover {
+            background-color: #ececec;
+        }
+    </style>
 </head>
 <body>
-@auth
-    <div class="card text-center">
-        <div class="card-header">
-            <ul class="nav nav-pills card-header-pills">
-                <li class="nav-item">
-                    <a class="nav-link" href="/" style="color: green;">Registro</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="\admin" style="color: green;">Torneos</a>
-                </li>
-                <li class="nav-item success" id="go-back">
-                    <a class="nav-link active" href="/enfrentamientos" style="background-color: #198754;">Enfrentamientos</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" style="color: green;">Opciones</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/participantes">Solicitudes</a></li>
-                        <li><a class="dropdown-item" href="/aceptados">Participantes</a></li>
-                        <li><a class="dropdown-item" href="/enfrentamientos">Enfrentamientos</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Separated link</a></li>
-                    </ul>
-                </li>
-                <form action="/logout" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-link text-success">Cerrar sesión</button>
-                </form>
-            </ul>
-        </div>
-        @extends('layouts.app')
-        @section('content')
-        @endsection
-        <div class="row">
-            <form action="{{ route('crear_enfrentamientos', ['id_torneo' => $torneo->id_torneo]) }}" method="GET">
-                @csrf
-                <button type="submit" class="btn btn-success mb-2 mt-5">Crear Enfrentamientos</button>
-            </form>
-            <div class="col-md-8 mb-5">
 
-                <div class="card m-5"> 
-                    <div class="card-body table-responsive">
-                        <h5 class="card-title">ENFRENTAMIENTO ACTUAL</h5>
-                        <BR></BR>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="table-dark">ID</th>
-                                    <th class="table-dark">Torneo</th>
-                                    <th class="table-dark">Equipo Local</th>
-                                    <th class="table-dark">Equipo Visitante</th>
-                                    <th class="table-dark">Ronda</th>
-                                    <th class="table-dark">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($enfrentamientos as $enfrentamiento)
-                                    @if ($enfrentamiento->resultado === null)
-                                        <tr>
-                                            <td>{{ $enfrentamiento->id_enfrentamiento }}</td>
-                                            <td>{{ $enfrentamiento->fk_id_torneo }}</td>
-                                            <td>{{ $enfrentamiento->id_equipo_local }}</td>
-                                            <td>{{ $enfrentamiento->id_equipo_visitante }}</td>
-                                            <td>{{ $enfrentamiento->ronda }}</td>
-                                            <td>{{ $enfrentamiento->resultado }}</td>
-                                        </tr>
-                                        @break 
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>     
-              
-                </div>
-                <div class="card m-5">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 border border-success p-2">
-                            <h2>Equipo 1</h2>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="table-success">ID</th>
-                                        <th class="table-success">Nombre</th>
-                                        <th class="table-success">Apellido</th>
-                                        <th class="table-success">Puntos</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- @foreach($participantesVisitante as $participante)
-                        <tr>
-                            <td>{{ $participante->cedula }}</td>
-                            <td>{{ $participante->nombre }}</td>
-                            <td>{{ $participante->apellido }}</td>
-                            <td>{{ $participante->puntos }}</td>
-                        </tr>
-                    @endforeach --}}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-6 border border-primary p-2">
-                            <h2>Equipo 2</h2>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="table-primary">ID</th>
-                                        <th class="table-primary">Nombre</th>
-                                        <th class="table-primary">Apellido</th>
-                                        <th class="table-primary">Puntos</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- @foreach($participantesVisitante as $participante)
-                                    <tr>
-                                        <td>{{ $participante->cedula }}</td>
-                                        <td>{{ $participante->nombre }}</td>
-                                        <td>{{ $participante->apellido }}</td>
-                                        <td>{{ $participante->puntos }}</td>
-                                    </tr>
-                                @endforeach --}}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div> 
-            </div>
-        </div>      
-            <div class="col-md-4 mb-5">
-                <div class="card m-5">                     
-                    <div class="card-body table-responsive">
-                        <h5 class="card-title">ENFRENTAMIENTOS PROXIMOS</h5>
-                        <BR>
-                        <table class="table table-dark table-striped">
-                            <caption>Lista de los proximos equipos por efrentarse.</caption>
-                            <thead>
-                                <tr>
-                                    <th class="table-dark">ID</th>
-                                    <th class="table-dark">Torneo</th>
-                                    <th class="table-dark">Equipo Local</th>
-                                    <th class="table-dark">Equipo Visitante</th>
-                                    <th class="table-dark">Ronda</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($enfrentamientoss as $enfrentamiento)
-                                    @if ($enfrentamiento->resultado === null)
-                                        <tr>
-                                            <td>{{ $enfrentamiento->id_enfrentamiento }}</td>
-                                            <td>{{ $enfrentamiento->fk_id_torneo }}</td>
-                                            <td>{{ $enfrentamiento->id_equipo_local }}</td>
-                                            <td>{{ $enfrentamiento->id_equipo_visitante }}</td>
-                                            <td>{{ $enfrentamiento->ronda }}</td>
-
-                                        </tr>
-                                        
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="card m-5"> 
-                
-                    <div class="card-body table-responsive">
-                        <h5 class="card-title">Ganadores</h5>
-                        <BR></BR>
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th class="table-dark">ID</th>
-                                    <th class="table-dark">Torneo</th>
-                                    <th class="table-dark">Equipo Local</th>
-                                    <th class="table-dark">Equipo Visitante</th>
-                                    <th class="table-dark">Ronda</th>
-                                    <th class="table-dark">Resultado</th>
-    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($resultados as $resultado)
-                                    @if ($resultado->resultado !== null)
-                                        <tr>
-                                            <td class="table-success">{{ $resultado->id_enfrentamiento }}</td>
-                                            <td class="table-success">{{ $resultado->fk_id_torneo }}</td>
-                                            <td class="table-success">{{ $resultado->id_equipo_local }}</td>
-                                            <td class="table-success">{{ $resultado->id_equipo_visitante }}</td>
-                                            <td class="table-success">{{ $resultado->ronda }}</td>
-                                            <td class="table-success">{{ $resultado->resultado }}</td>
-    
-                                        </tr>
-                                        
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-            </div>
-            
-        </div>
-
-        
-       
-        @section('css')
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-        @endsection
-        @section('js')
-        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-        @endsection
-        
-
-     
-@else 
-
-@if(session('error'))
-<div class="alert alert-danger">
-    {{ session('error') }}
-</div>
-@endif
-
-
+<!-- Navbar -->
 <div class="card text-center">
     <div class="card-header">
       <ul class="nav nav-pills card-header-pills">
        
         <li class="nav-item">
-            <a class="nav-link" href="/" style="color: #198754;">Registro</a>
+            <a class="nav-link" href="/" style="color: green;">Registro</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="#" style="background-color: #198754;">Iniciar Sesión</a>
+            <a class="nav-link" href="\admin" style="color: green;">Torneos</a>
         </li>
+
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" style="color: green;">Opciones</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/participantes">Solicitudes</a></li>
+                <li><a class="dropdown-item" href="/aceptados">Participantes</a></li>
+
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Separated link</a></li>
+            </ul>
+          </li>
+        <form action="/logout" method="post">
+            @csrf
+            <button type="submit" class="btn btn-link text-success">Cerrar sesión</button>
+            </form> 
       </ul>
     </div>
-    <div class="card-body">
-        <div style="border: 1px solid green; padding: 10px; margin: 10px auto; text-align: center;" class="m-3">
-            <h2 style="color: #198754;">Inicio de sesión</h2>
-            <form action="{{route('iniciar')}}" method="POST">
 
-            @csrf
-                <div class="form-group">
-                <label for="nombre">Nombre</label>
-                <input name="loginname" type="name" class="form-control" id="examplename" placeholder="Nombre">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Contraseña</label>
-                    <input name="loginpassword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                </div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <h3 class="bg-dark rounded text-white p-2">Todos los Enfrentamientos</h3>
+
+            <div class="list-group">
+                @foreach ($enfrentamientos as $enfrentamiento)
+                    <a href="{{ route('enfrentamientos.show', $enfrentamiento->id_enfrentamiento) }}" class="sidebar-link">
+                       Equipo {{ $enfrentamiento->equipoLocal->id_equipo ?? 'Equipo Local' }} vs Equipo {{ $enfrentamiento->equipoVisitante->id_equipo ?? 'no asignado' }}
+                    </a>
+                @endforeach
+            </div>
+            
+            <br>
+            <h3 class="bg-dark rounded text-white p-2">Ganadores</h3>
+
+            <div class="list-group">
+                @foreach ($resultados as $resultado)
+                    <ul class="list-group mb-1">
+                        <li class="list-group-item list-group-item-success">
+                            <strong>Equipo {{ $resultado->id_equipo }}</strong>
+                        </li>
+                    </ul>
+                @endforeach
+            </div>
+            
+
+        </div>
         
-        <br><br>
-        <button type="submit" class="btn btn-success">Iniciar sesion</button>
-        </form>
+        <div class="col-md-9">
+
+            <h1 class="bg-dark rounded text-white p-2"><strong>ENFRENTAMIENTO</strong></h1>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <form action="{{ route('guardar.resultados', $enfrentamientoActual->id_enfrentamiento) }}" method="POST">
+                        @csrf
+                    <h2 class="bg-warning rounded text-dark p-2">
+                        Equipo Local <br> [Puntos: {{$enfrentamientoActual->equipoLocal->puntos}}]
+                    </h2>
+                    @foreach ($enfrentamientoActual->equipoLocal->participantes as $participante)
+                        <div class="card-participante">
+                            <p class="texto-elegante"><strong>{{ $participante->nombre }} {{ $participante->apellido }}</strong></p>
+                            <input type="number" class="form-control" value="{{ $participante->puntos }}" name="puntos_local[{{ $participante->cedula }}]">
+                        </div>
+
+                    @endforeach
+                </div>
+
+                <div class="col-md-6">
+                    <h2 class="bg-warning rounded text-dark p-2">
+                        Equipo Visitante <br> [Puntos: {{$enfrentamientoActual->equipoVisitante->puntos}}]
+                    </h2>
+                    @foreach ($enfrentamientoActual->equipoVisitante->participantes as $participante)
+                        <div class="card-participante">
+                            <p class="texto-elegante"><strong>{{ $participante->nombre }} {{ $participante->apellido }}</strong></p>
+                            <input type="number" class="form-control" value="{{ $participante->puntos }}" name="puntos_visitante[{{ $participante->cedula }}]">
+                            {{-- otros detalles del participante --}}
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success mt-3 mb-3">guardar</button>
+            </form>
+            <form action="{{ route('determinar.ganador', $enfrentamientoActual->id_enfrentamiento) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-info mt-3 mb-3">Determinar Ganador</button>
+            </form>
         </div>
     </div>
+</div>
 
-      <a href="https://www.coopserp.com/" class="btn btn-success">Coopserp</a>
-    </div>
-  </div>
-
-@endauth
-           
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>       
-  </body>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 </html>
-
-
-
