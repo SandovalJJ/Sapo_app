@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id('id_equipo');
             $table->string('estado_equipo');
             $table->integer('puntos')->default(0);
-            $table->unsignedBigInteger('fk_id_torneo'); // Cambiado a fk_id_torneos para que coincida con la migración de participantes
+            $table->integer('capitan')->nullable();
+            $table->unsignedBigInteger('fk_id_torneo')->nullable();
 
             // Definir la clave foránea a la tabla 'torneos'
             $table->foreign('fk_id_torneo')->references('id_torneo')->on('torneos');

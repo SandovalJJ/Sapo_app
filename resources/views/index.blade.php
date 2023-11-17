@@ -70,7 +70,7 @@
                     <div class="card-header">
                         <ul class="nav nav-pills justify-content-center">
                             <li class="nav-item">
-                                <a class="nav-link active mt-3 text-center" href="/login" style="background-color: #198754;">Iniciar Sesión</a>
+                                <a class="nav-link active mt-3 text-center" href="/admin" style="background-color: #198754;">ADMIN</a>
                             </li>
                         </ul>
                     </div>
@@ -80,57 +80,55 @@
 
 </div>
       @else
-{{-- DIV de navegacion --}}
-<div class="card text-center">
-    <div class="card-header">
-      <ul class="nav nav-pills card-header-pills">
-        <li class="nav-item">
-            <a class="nav-link active" href="" style="background-color: #198754;">Registro</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/login" style="color: green;">Iniciar Sesión</a>
-        </li>
-      </ul>
-    </div>
-    <div class="col-md-4 offset-md-4">
-        <div style="border: 1px solid rgb(21, 198, 18), 0.663); padding: 10px; margin: 10px auto; text-align: center;" class="m-3">
-            <h2 style="color: #198754;">REGISTRO EN EL TORNEO</h2>
-            <!-- Contenido de tu formulario -->
-            <form action="/create-participante" method="post">
-                @csrf
-                <div class="mb-3">
-                    <label for="cedula" class="form-label">Cédula</label>
-                    <input type="number" name="cedula" class="form-control" id="cedula" placeholder="Cédula" style="border: 1px solid green;">
+      <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="overlay">
+            <div class="form-container text-center">
+                
+                <h2 style="color: #198754;">REGISTRO TORNEO</h2>
+                <!-- Contenido de tu formulario -->
+                <form action="/create-participante" method="post">
+                    @csrf
+                    @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                    @endif
+                            <div class="mb-3">
+                                <label for="cedula" class="form-label text-dark fw-bold">Cédula</label>
+                                <input type="number" name="cedula" class="form-control" id="cedula" placeholder="Cédula" style="border: 1px solid green;">
+                            </div>
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label text-dark fw-bold">Nombre</label>
+                                <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre" style="border: 1px solid green;">
+                            </div>
+                            <div class="mb-3">
+                                <label for="apellido" class="form-label text-dark fw-bold">Apellido</label>
+                                <input type="text" name="apellido" class="form-control" id="apellido" placeholder="Apellido" style="border: 1px solid green;">
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label text-dark fw-bold">Teléfono</label>
+                                <input type="number" name="telefono" class="form-control" id="telefono" placeholder="Teléfono" style="border: 1px solid green;">
+                            </div>
+                            <div class="mb-3">
+                                <label for="correo" class="form-label text-dark fw-bold">Correo</label>
+                                <input type="email" name="correo" class="form-control" id="correo" placeholder="Correo" style="border: 1px solid green;">
+                            </div>
+                            <div class="mb-3">
+                                <label for="agencia" class="form-label text-dark fw-bold">Agencia</label>
+                                <input type="text" name="agencia" class="form-control" id="agencia" placeholder="Agencia" style="border: 1px solid green;">
+                            </div>
+                            <button type="submit" class="btn btn-success mt-3">Registrar</button>
+                        </form>
+                        <div class="card-header">
+                            <ul class="nav nav-pills justify-content-center">
+                                <li class="nav-item">
+                                    <a class="nav-link active mt-3 text-center" href="/login" style="background-color: #198754;">Iniciar sesión</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre" style="border: 1px solid green;">
-                </div>
-                <div class="mb-3">
-                    <label for="apellido" class="form-label">Apellido</label>
-                    <input type="text" name="apellido" class="form-control" id="apellido" placeholder="Apellido" style="border: 1px solid green;">
-                </div>
-                <div class="mb-3">
-                    <label for="telefono" class="form-label">Teléfono</label>
-                    <input type="number" name="telefono" class="form-control" id="telefono" placeholder="Teléfono" style="border: 1px solid green;">
-                </div>
-                <div class="mb-3">
-                    <label for="correo" class="form-label">Correo</label>
-                    <input type="email" name="correo" class="form-control" id="correo" placeholder="Correo" style="border: 1px solid green;">
-                </div>
-                <div class="mb-3">
-                    <label for="agencia" class="form-label">Agencia</label>
-                    <input type="text" name="agencia" class="form-control" id="agencia" placeholder="Agencia" style="border: 1px solid green;">
-                </div>
-                <button type="submit" class="btn btn-success m-3 text-center">Regitrar</button>
-            </form>
-        </div>
-    </div>
-    
-      
-
-    </div>
-  </div>
+            </div>
   @endauth
 
   

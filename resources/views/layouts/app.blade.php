@@ -11,8 +11,7 @@
     @yield('css') <!-- Aquí se incluirán los estilos específicos de cada vista -->
 </head>
 <body>
-    <header>
-        <!-- Barra de navegación u otros elementos comunes -->
+
     </header>
 
     <main>

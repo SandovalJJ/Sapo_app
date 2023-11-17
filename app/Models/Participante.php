@@ -13,7 +13,7 @@ class Participante extends Model
     protected $primaryKey = 'cedula';
     public $timestamps = false;
 
-    protected $fillable = ['cedula', 'nombre', 'apellido', 'telefono', 'correo', 'puntos', 'agencia', 'estado', 'fk_id_equipo'];
+    protected $fillable = ['cedula', 'nombre', 'apellido', 'telefono', 'correo', 'puntos','puntosTemporal', 'agencia', 'estado', 'fk_id_equipo'];
 
     public function equipo()
     {

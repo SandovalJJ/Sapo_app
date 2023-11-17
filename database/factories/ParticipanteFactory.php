@@ -26,6 +26,7 @@ class ParticipanteFactory extends Factory
             'telefono' => $this->faker->phoneNumber,
             'correo' => $this->faker->unique()->safeEmail,
             'puntos' => $this->faker->numberBetween(0, 100),
+            'puntosTemporal' => $this->faker->numberBetween(0, 100),
             'agencia' => $this->faker->word,
             'estado' => $this->faker->randomElement(['aceptado']),
             'fk_id_equipo' => null, // Para asegurarse de que inicialmente no tienen equipo asignado.

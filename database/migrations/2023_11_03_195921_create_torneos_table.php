@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('id_torneo');
             $table->date('fecha');
             $table->string('nombre');
-            $table->integer('ronda')->default(1);
         });
     }
 

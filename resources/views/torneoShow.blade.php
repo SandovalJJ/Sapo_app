@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Torneo sapo - Coopserp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+    <link href="{{ asset('css/estilos.css') }}" rel="stylesheet">
+
   </head>
   <body>
 @auth
@@ -65,6 +68,8 @@
                         <div class="container">
                             <div class="d-flex flex-row justify-content-start">
 
+                                <a href="{{ route('enfrentamientos.show', ['id' => request()->route('id_torneo')]) }}" class="btn btn-success me-3 pd-3">Enfrentamientos</a>
+                                
                                 <a href="{{ route('generar.equipos', ['id_torneo' => request()->route('id_torneo')]) }}" class="btn btn-success me-3 pd-3">Generar equipos</a>
                                 
                                 <form action="{{ route('crear_enfrentamientos', ['id_torneo' => $torneo->id_torneo]) }}" method="GET">
@@ -91,17 +96,27 @@
                                 @foreach ($equipos as $equipo)
                                     <tr>
                                         
-                                        <td><a href="{{ route('participantes', ['id_equipo' => $equipo->id_equipo]) }}" class="text-success text-decoration-none">{{$equipo->id_equipo}}</a></td>
+                                        <!-- En tu archivo Blade -->
+                                        <td class="">
+                                            <a href="{{ route('participantes', ['id_equipo' => $equipo->id_equipo]) }}" class="text-success text-decoration-none estilo-td">
+                                                {{$equipo->id_equipo}}
+                                            </a>
+                                        </td>
+
 
                                         
                                         <td>{{$equipo->puntos}}</td>
                                         <td><strong>{{$equipo->estado_equipo}}</strong></td>
-                                        <td colspan="3">                                           
+                                        <td colspan="1" style="text-align: center;">                                           
+                                            <div style="display: inline-block; text-align: justify;">
                                                 @foreach ($equipo->participantes as $participante)
-                                                <li>{{ $participante->nombre }} {{ $participante->apellido }}</li>
+                                                    <li>{{ $participante->nombre }} {{ $participante->apellido }}</li>
                                                 @endforeach
-                                            
+                                            </div>
                                         </td>
+                                        
+                                        
+                                       
                                     </tr>
                                     
                                 @endforeach

@@ -6,6 +6,7 @@
     <title>Torneo sapo - Coopserp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
 
   </head>
   <body>
@@ -23,10 +24,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="\admin" style="color: green;">Torneos</a>
             </li>
-            <li class="nav-item success" id="go-back">
-                <a class="nav-link active" href="" style="background-color: #198754;">Equipos</a>
-
-            </li>         
+       
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" style="color: green;">Opciones</a>
                 <ul class="dropdown-menu">
@@ -93,9 +91,72 @@
                                     <table id="participantes" class="table table-striped" style="width:100%">
                                        <!-- ... (tu tabla) ... -->
                                     </table>
-                                    <button type="submit" class="btn btn-success">Guardar</button>
+                                    <button type="submit" class="btn btn-success"><Strong>Guardar</Strong></button>
                                  </form>
-                                 
+                                        
+
+                                    
+                                 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Eliminar</h1>                                                   
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          
+                                        </div>
+                                            
+                                        <div class="modal-body">
+                                            
+                                            <form action="{{ route('remover.participante') }}" method="POST">
+                                                @csrf
+
+                                                <input type="hidden" name="equipo_id" value="{{ $id_equipo }}">
+
+                                                <select class="form-select" name="participante_id" aria-label="Select example">
+                                                    @foreach($participantes as $integrante)
+                                                        <option value="{{ $integrante->cedula }}">{{ $integrante->nombre }} {{ $integrante->apellido }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <button type="submit" class="btn btn-danger mt-3">Eliminar participante</button>
+                                            </form>                                                        
+                                        </div>
+
+                                            <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Opción agregar participante</button>                                                   
+                                            
+                                            </div>                                                  
+                                            </div>                                                
+                                        </div>
+                                        <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Agregar</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    
+                                                    <form action="{{ route('asignar.participante') }}" method="POST">
+                                                        @csrf
+
+                                                        <input type="hidden" name="equipo_id" value="{{ $id_equipo }}">
+                                                        <select class="form-select" name="participante_id" aria-label="Select example">
+                                                            @foreach($participantesSinEquipo as $participante)
+                                                                <option value="{{ $participante->cedula }}">{{ $participante->nombre }} {{ $participante->apellido }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <button type="submit" class="btn btn-success mt-3">Agregar participante</button>
+                                                    </form>                                                                                                          
+                                                
+                                                </div>
+                                                <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Volver a la opción eliminar</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                  <button class="btn btn-success mt-3 " data-bs-target="#exampleModalToggle" data-bs-toggle="modal"><i class="bi bi-pencil-square"></i><strong>Editar</strong></button>
+
+
+
+
                         </div>
                     </div>
                 </div>
@@ -156,8 +217,6 @@
         </form>
         </div>
     </div>
-
-      <a href="https://www.coopserp.com/" class="btn btn-success">Coopserp</a>
     </div>
   </div>
 

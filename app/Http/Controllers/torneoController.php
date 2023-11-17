@@ -24,14 +24,29 @@ public function equipos($id_torneo)
 {
     $torneo = Torneo::find($id_torneo);
     $equipos = Equipo::where('fk_id_torneo', $id_torneo)->get();
+    
     return view('torneoShow', ['torneo' => $torneo, 'equipos' => $equipos]);
+    
 }
 
-public function enfrentamientos($id_torneo)
+public function mostrarEnfrentamientos($id_enfrentamiento)
 {
-    $torneo = Torneo::find($id_torneo);
-    $equipos = Equipo::where('fk_id_torneo', $id_torneo)->get();
-    return view('torneoShow', ['torneo' => $torneo, 'equipos' => $equipos]);
+    $enfrentamientoActual = Enfrentamiento::with('equipoLocal.participantes', 'equipoVisitante.participantes')->find($id_enfrentamiento);
+    $enfrentamientos = Enfrentamiento::whereNull('resultado')->get();
+    $resultados = Enfrentamiento::whereNotNull('resultado')
+                                ->join('equipos', 'enfrentamientos.resultado', '=', 'equipos.id_equipo')
+                                ->where('equipos.estado_equipo', 'CALIFICADO')
+                                ->select('equipos.id_equipo') // Selecciona solo la columna id_equipo de la tabla equipos
+                                ->distinct() // Asegúrate de que los ID de los equipos sean únicos
+                                ->get();
+
+    $todosLosEnfrentamientos = Enfrentamiento::all(); // Asumiendo que no son demasiados para cargar
+
+    if (!$enfrentamientoActual) {
+        abort(404);
+    }
+
+    return view('torneoShow', compact('enfrentamientoActual', 'todosLosEnfrentamientos', 'enfrentamientos', 'resultados'));
 }
 
 

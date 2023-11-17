@@ -13,7 +13,7 @@ class Torneo extends Model
     protected $primaryKey = 'id_torneo';
     public $timestamps = false;
 
-    protected $fillable = ['nombre', 'fecha', 'ronda'];
+    protected $fillable = ['nombre', 'fecha'];
 
     public function equipos()
     {

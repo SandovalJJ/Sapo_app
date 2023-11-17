@@ -1,0 +1,38 @@
+/* En tu hoja de estilos CSS */
+.estilo-td {
+    font-weight: bold; /* Negrita */
+    font-size: 200%; /* Aumento del tamaño de fuente */
+    border-bottom: 2px solid green; /* Línea debajo de color verde */
+}
+
+.bg-verde {
+    background-color: #4CAF50; /* Verde más suave */
+}
+.bg-amarillo {
+    background-color: #fff3cd; /* Amarillo más suave */
+}
+.texto-elegante {
+    color: #333333;
+}
+
+body {
+    font-family: 'Roboto', sans-serif; /* Fuente moderna y legible */
+}
+
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif; /* Fuente para títulos */
+}
+
+.btn {
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.btn:hover {
+    opacity: 0.9; /* Efecto al pasar el mouse */
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}

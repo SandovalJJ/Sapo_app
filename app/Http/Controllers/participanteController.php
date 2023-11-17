@@ -109,6 +109,22 @@ public function guardarPuntos(Request $request)
     return redirect()->back()->with('success', 'Puntos actualizados con éxito');
 }
 
+public function asignarCapitan(Request $request, $idParticipante)
+{
+    $participante = Participante::findOrFail($idParticipante);
+    $idEquipo = $participante->fk_id_equipo;
+
+    // Verificar que ningún otro miembro del equipo sea capitán
+    if (Participante::where('fk_id_equipo', $idEquipo)->where('capitan', true)->exists()) {
+        return back()->with('error', 'Este equipo ya tiene un capitán.');
+    }
+
+    // Asignar como capitán
+    $participante->capitan = true;
+    $participante->save();
+
+    return back()->with('success', 'Capitán asignado correctamente.');
+}
 
 
 

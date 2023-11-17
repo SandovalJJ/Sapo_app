@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('telefono');
             $table->string('correo');
             $table->integer('puntos')->default(0);
+            $table->integer('puntosTemporal')->default(0);
             $table->string('agencia');
             $table->string('estado')->default('pendiente');
             $table->unsignedBigInteger('fk_id_equipo')->nullable();

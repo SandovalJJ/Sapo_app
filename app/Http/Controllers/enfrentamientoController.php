@@ -23,13 +23,18 @@ public function mostrarEnfrentamiento($id_enfrentamiento)
     ->get();
 
     $todosLosEnfrentamientos = Enfrentamiento::all(); // Asumiendo que no son demasiados para cargar
+      $siguienteEnfrentamiento = Enfrentamiento::where('id_enfrentamiento', '>', $id_enfrentamiento)
+                                             ->whereNull('resultado')
+                                             ->orderBy('id_enfrentamiento')
+                                             ->first();
+    
 
-
+    
     if (!$enfrentamientoActual) {
         abort(404);
     }
 
-    return view('enfrentamientos', compact('enfrentamientoActual', 'todosLosEnfrentamientos', 'enfrentamientos', 'resultados'));
+    return view('enfrentamientos', compact('enfrentamientoActual', 'todosLosEnfrentamientos', 'enfrentamientos', 'resultados', 'siguienteEnfrentamiento'));
 }
 
 public function crearEnfrentamientos($id_torneo) {
@@ -150,6 +155,16 @@ public function determinarGanador(Request $request, $id_enfrentamiento)
     $perdedor->save();
 
     return back()->with('success', 'El ganador ha sido determinado y el estado actualizado.');
+}
+
+public function show($id_enfrentamiento)
+{
+    $enfrentamientoActual = Enfrentamiento::with(['equipoLocal', 'equipoVisitante'])->findOrFail($id_enfrentamiento);
+    // Lógica para obtener el siguiente enfrentamiento
+    $siguienteEnfrentamiento = Enfrentamiento::where('id', '>', $id_enfrentamiento)->first();
+
+    // Pasa el ID del siguiente enfrentamiento a la vista
+    return view('tuVista', ['enfrentamientoActual' => $enfrentamientoActual, 'siguienteEnfrentamientoId' => $siguienteEnfrentamiento->id ?? null]);
 }
 
 

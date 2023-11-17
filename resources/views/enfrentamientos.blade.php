@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enfrentamiento de Equipos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
     <style>
         .bg-verde {
             background-color: #4CAF50; /* Un tono de verde */
@@ -112,7 +113,7 @@
                     <form action="{{ route('guardar.resultados', $enfrentamientoActual->id_enfrentamiento) }}" method="POST">
                         @csrf
                     <h2 class="bg-warning rounded text-dark p-2">
-                        Equipo Local <br> [Puntos: {{$enfrentamientoActual->equipoLocal->puntos}}]
+                        Equipo {{$enfrentamientoActual->equipoLocal->id_equipo}} <br> [Puntos: {{$enfrentamientoActual->equipoLocal->puntos}}]
                     </h2>
                     @foreach ($enfrentamientoActual->equipoLocal->participantes as $participante)
                         <div class="card-participante">
@@ -125,7 +126,7 @@
 
                 <div class="col-md-6">
                     <h2 class="bg-warning rounded text-dark p-2">
-                        Equipo Visitante <br> [Puntos: {{$enfrentamientoActual->equipoVisitante->puntos}}]
+                        Equipo {{$enfrentamientoActual->equipoVisitante->id_equipo}} <br> [Puntos: {{$enfrentamientoActual->equipoVisitante->puntos}}]
                     </h2>
                     @foreach ($enfrentamientoActual->equipoVisitante->participantes as $participante)
                         <div class="card-participante">
@@ -138,10 +139,18 @@
             </div>
             <button type="submit" class="btn btn-success mt-3 mb-3">guardar</button>
             </form>
-            <form action="{{ route('determinar.ganador', $enfrentamientoActual->id_enfrentamiento) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-info mt-3 mb-3">Determinar Ganador</button>
-            </form>
+            <div>
+                <form action="{{ route('determinar.ganador', $enfrentamientoActual->id_enfrentamiento) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-success mt-3 mb-3">Determinar Ganador</button>
+                </form>
+                @if(isset($siguienteEnfrentamientoId))
+                <a href="{{ route('enfrentamientos.show', $siguienteEnfrentamientoId) }}" class="btn btn-primary mt-3 mb-3">Siguiente Enfrentamiento</a>
+            @else
+                <button class="btn btn-secondary mt-3 mb-3" disabled>No hay más enfrentamientos</button>
+            @endif
+            </div>
+
         </div>
     </div>
 </div>

@@ -37,6 +37,7 @@
         }
     </style>
 </head>
+
 <body>
 
 @if(session('error'))
@@ -52,8 +53,8 @@
         <form action="{{route('iniciar')}}" method="POST">
             @csrf
             <div class="form-group mb-3" >
-                <label for="nombre" class="fw-bold">Nombre</label>
-                <input name="loginname" type="name" class="form-control" id="examplename" placeholder="Nombre">
+                <label for="nombre" class="fw-bold">ID</label>
+                <input name="loginname" type="name" class="form-control" id="examplename" placeholder="ID">
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1" class="fw-bold">Contraseña</label>
