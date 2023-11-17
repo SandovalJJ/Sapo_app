@@ -6,7 +6,9 @@
     <title>Torneo sapo - Coopserp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+    <script src="https://kit.fontawesome.com/056e693a0d.js" crossorigin="anonymous"></script>
     <link href="{{ asset('css/estilos.css') }}" rel="stylesheet">
+
 
   </head>
   <body>
@@ -65,7 +67,7 @@
                     <div class="card-body">
                         
                         <p style="font-size: 30px; color: green; font-weight: bold;">Torneo {{ $torneo->nombre }} de sapo - Coopserp</p>
-                        
+    
                         <div class="container">
                             <div class="d-flex flex-row justify-content-start">
 
@@ -79,83 +81,70 @@
                                 </form>
                                 
                             </div>
+                            
+        <div class="container mt-3">
+            <div class="row">
+                @foreach ($equipos as $equipo)
+                    <!-- Each card takes up 4 columns on large screens, 6 columns on medium screens, and full width on small screens -->
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                        <div class="card" style="width: 100%;">
+                            <div class="card-body">
+                                <a href="{{ route('participantes', ['id_equipo' => $equipo->id_equipo]) }}" class="text-success text-decoration-none estilo-td mb-3">
+                                    Equipo: {{$equipo->id_equipo}}
+                                </a>
+                                <h6 class="card-subtitle mb-2 text-body-secondary mt-2 fw-bold fs-4">Puntos: {{$equipo->puntos}}</h6>
+                                <div style="text-align: center;">
+                                    @foreach ($equipo->participantes as $participante)
+                                        {{ $participante->nombre }} {{ $participante->apellido }} <br>
+                                    @endforeach
+                                    <button class="btn btn-success mt-3 " data-bs-target="#exampleModalToggle{{ $equipo->id_equipo }}" data-bs-toggle="modal"><i class="fa-solid fa-crown"></i><strong> CAPITÁN</strong></button>
+                                </div>
+                                <div class="modal fade" id="exampleModalToggle{{ $equipo->id_equipo }}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h1 class="modal-title fs-5" id="exampleModalToggleLabel">ASIGNAR CAPITÁN DEL EQUIPO</h1>                                                   
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          
+                                        </div>
+                                            
+                                        <div class="modal-body">
+                                            
+                                            <form action="  " method="POST">
+                                                @csrf
+
+
+
+                                                <select class="form-select" name="participante_id" aria-label="Select example">
+                                                    @foreach($equipo->participantes as $participante)
+                                                        <option value="{{ $participante->cedula }}">{{ $participante->nombre }} {{ $participante->apellido }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <button type="submit" class="btn btn-success mt-3 fw-bold">Asignar capitán</button>
+                                            </form>                                                        
+                                        </div>
+                                         </div>                                                  
+                                         </div>                                                
+                                        </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
 
                         </div>
                         <br>
                            
-                        <table id="participantes" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">ID Equipo</th>
-                                    <th class="text-center">Puntos</th>
-                                    <th class="text-center">Estado</th>
-                                    <th class="text-center">Integrantes</th>
-                                    <th class="text-center">Seleccionar Capitán</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                @foreach ($equipos as $equipo)
-                                    <tr>
-                                        <td class="">
-                                            <a href="{{ route('participantes', ['id_equipo' => $equipo->id_equipo]) }}" class="text-success text-decoration-none estilo-td">
-                                                {{$equipo->id_equipo}}
-                                            </a>
-                                        </td>                                     
-                                        <td>{{$equipo->puntos}}</td>
-                                        <td><strong>{{$equipo->estado_equipo}}</strong></td>
-                                        <td colspan="1" style="text-align: center;">                                           
-                                            <div style="display: inline-block; text-align: justify;">
-                                                @foreach ($equipo->participantes as $participante)
-                                                    <li>{{ $participante->nombre }} {{ $participante->apellido }}</li>
-                                                @endforeach
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="modal fade" id="exampleModalToggle{{ $equipo->id_equipo }}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                  <div class="modal-content">
-                                                    <div class="modal-header">
-                                                      <h1 class="modal-title fs-5" id="exampleModalToggleLabel">ASIGNAR CAPITÁN DEL EQUIPO</h1>                                                   
-                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                      
-                                                    </div>
-                                                        
-                                                    <div class="modal-body">
-                                                        
-                                                        <form action="  " method="POST">
-                                                            @csrf
-            
-            
-            
-                                                            <select class="form-select" name="participante_id" aria-label="Select example">
-                                                                @foreach($equipo->participantes as $participante)
-                                                                    <option value="{{ $participante->cedula }}">{{ $participante->nombre }} {{ $participante->apellido }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <button type="submit" class="btn btn-success mt-3">Asignar capitán</button>
-                                                        </form>                                                        
-                                                    </div>
-                                                     </div>                                                  
-                                                     </div>                                                
-                                                    </div>
-                                                        </div>
-                                                    </div>
-                                              <button class="btn btn-success mt-3 " data-bs-target="#exampleModalToggle{{ $equipo->id_equipo }}" data-bs-toggle="modal"><i class="bi bi-trophy"></i><strong> CAPITÁN</strong></button>
-            
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card text-center">
-          </div>
-          
+        
+
         @endsection
         
         @section('css')
