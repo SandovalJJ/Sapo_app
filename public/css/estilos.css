@@ -5,6 +5,12 @@
     border-bottom: 2px solid green; /* Línea debajo de color verde */
 }
 
+.estilo-tf {
+    font-weight: bold; /* Negrita */
+    font-size: 200%; /* Aumento del tamaño de fuente */
+     /* Línea debajo de color verde */
+}
+
 .bg-verde {
     background-color: #4CAF50; /* Verde más suave */
 }
@@ -35,4 +41,9 @@ h1, h2, h3 {
 .form-control {
     border-radius: 5px;
     border: 1px solid #ced4da;
+}
+
+.nav-item-link:hover {
+    background-color: #033d33; /* Color de fondo al pasar el cursor */
+    color: #ffffff; /* Color del texto al pasar el cursor */
 }
