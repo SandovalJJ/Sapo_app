@@ -91,7 +91,7 @@ public function crearEnfrentamientos($id_torneo) {
 }
 
 
-// Dentro de EnfrentamientoController.php
+//GUARDA LOS PUNTOS QUE TIENE ACTUALMENTE
 
 public function guardarResultados(Request $request, $id_enfrentamiento)
 {
@@ -128,7 +128,7 @@ public function guardarResultados(Request $request, $id_enfrentamiento)
 }
 
 
-// Dentro de EnfrentamientoController.php
+//DETERMINA EL GANADOR DEL ENFRENTAMIENTO BASADO EN LA CANTIDAD DE PUNTOS
 
 public function determinarGanador(Request $request, $id_enfrentamiento)
 {
@@ -157,15 +157,9 @@ public function determinarGanador(Request $request, $id_enfrentamiento)
     return back()->with('success', 'El ganador ha sido determinado y el estado actualizado.');
 }
 
-public function show($id_enfrentamiento)
-{
-    $enfrentamientoActual = Enfrentamiento::with(['equipoLocal', 'equipoVisitante'])->findOrFail($id_enfrentamiento);
-    // Lógica para obtener el siguiente enfrentamiento
-    $siguienteEnfrentamiento = Enfrentamiento::where('id', '>', $id_enfrentamiento)->first();
 
-    // Pasa el ID del siguiente enfrentamiento a la vista
-    return view('tuVista', ['enfrentamientoActual' => $enfrentamientoActual, 'siguienteEnfrentamientoId' => $siguienteEnfrentamiento->id ?? null]);
-}
+
+
 
 
 }

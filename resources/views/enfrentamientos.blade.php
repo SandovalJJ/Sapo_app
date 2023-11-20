@@ -158,11 +158,6 @@
                     <button type="submit" class="btn btn-success mt-3 mb-3">Determinar Ganador</button>
                 </form>
 
-                @if(isset($siguienteEnfrentamientoId))
-                <a href="{{ route('enfrentamientos.show', $siguienteEnfrentamientoId) }}" class="btn btn-primary mt-3 mb-3">Siguiente Enfrentamiento</a>
-                @else   
-                <button class="btn btn-secondary mt-3 mb-3" disabled>No hay más enfrentamientos</button>
-                @endif  
             </div>
         </div>
     </div>
