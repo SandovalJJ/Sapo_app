@@ -6,41 +6,57 @@
     <title>Torneo sapo - Coopserp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+    <script src="https://kit.fontawesome.com/056e693a0d.js" crossorigin="anonymous"></script>
+    <link href="{{ asset('css/estilos.css') }}" rel="stylesheet">
 
   </head>
   <body>
 @auth
 
-    <div class="card text-center">
-        <div class="card-header">
+<nav class="navbar navbar-expand-lg p-3" style="background-color: #005e56">
+
+    <a class="navbar-brand">
+        <img style="filter: drop-shadow(0 2px 0.8px white);" src="{{ asset('img/LogoCoopserp2014-PNG.png') }}" alt="Descripción de la imagen" width="140" height="60">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="nav nav-pills card-header-pills">
+       
+        <li class="nav-item">
+            <a class="nav-link fw-semibold nav-item-link" href="/" style="color: white; font-size: 25px">Registro</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link fw-semibold nav-item-link" href="\admin" style="color: white; font-size: 25px">Torneos</a>
+        </li>
+        @auth
+        <li class="nav-item">
+            <a class="nav-link fw-semibold nav-item-link" href="/participantes" style="color: white; font-size: 25px">Solicitudes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link fw-semibold nav-item-link" href="/aceptados" style="color: white; font-size: 25px">Participantes</a>
+        </li>
+        <li class="nav-item ms-auto">
             
-          <ul class="nav nav-pills card-header-pills">
-           
-            
-            <li class="nav-item">
-                <a class="nav-link" href="/" style="color: green;">Registro</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="/admin" style="background-color: #198754;">Torneos</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" style="color: green;">Opciones</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/participantes">Solicitudes</a></li>
-                    <li><a class="dropdown-item" href="/aceptados">Participantes</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Separated link</a></li>
-                </ul>
-              </li>
-            <form action="/logout" method="post">
-                @csrf
-                <button type="submit" class="btn btn-link text-success">Cerrar sesión</button>
-                </form> 
-          </ul>
-          
-        </div>
- 
+                <form id="logout-form" action="/logout" method="post" style="display: none;">
+                    @csrf
+                    <button type="submit" id="logout-button"></button>
+                </form>
+
+                <a href="#" class="nav-link fw-semibold me-auto nav-item-link" onclick="document.getElementById('logout-button').click();" style="color: white; font-size: 25px;">Cerrar sesión</a>
+        </li>
+        @else
+        <li class="nav-item">
+            <a class="nav-link fw-semibold nav-item-link " href="/login" style="color: white; font-size: 25px">Iniciar sesión</a>
+        </li>
+        @endauth
+      </ul>
+      
+</nav>
             @extends('layouts.app')
 
             @section('content')

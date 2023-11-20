@@ -35,17 +35,23 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link fw-semibold nav-item-link" href="/aceptados" style="color: white; font-size: 25px">Participantes</a>
+                
             </li>
-            <li class="nav-item">                
-                <form action="/logout" method="post" class="nav-item">
+            <li class="nav-item ms-auto">
+                
+                <form id="logout-form" action="/logout" method="post" style="display: none;">
                     @csrf
-                    <button type="submit" class="btn btn-link nav-link fw-semibold me-auto nav-item-link" style="color: white; font-size: 25px; background: none; border: none; padding: 0; margin: 0;">Cerrar sesión</button>
+                    <button type="submit" id="logout-button"></button>
                 </form>
-                @endauth
-            </li>
+
+                <a href="#" class="nav-link fw-semibold me-auto nav-item-link" onclick="document.getElementById('logout-button').click();" style="color: white; font-size: 25px;">Cerrar sesión</a>
+        </li>
+            @else
             <li class="nav-item">
                 <a  class="nav-link fw-semibold nav-item-link" href="/login" style="color: white; font-size: 25px"">Iniciar sesión</a>
             </li>
+            @endauth
+           
           </ul>
 
     </nav>

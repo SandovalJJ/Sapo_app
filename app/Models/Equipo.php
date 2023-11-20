@@ -13,7 +13,7 @@ class Equipo extends Model
     protected $primaryKey = 'id_equipo';
     public $timestamps = false;
 
-    protected $fillable = ['estado_equipo', 'puntos', 'capitan', 'fk_id_torneo'];
+    protected $fillable = ['estado_equipo', 'puntos', 'puntos_temporales', 'capitan', 'fk_id_torneo'];
 
     public function torneo()
     {

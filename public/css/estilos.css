@@ -2,13 +2,13 @@
 .estilo-td {
     font-weight: bold; /* Negrita */
     font-size: 200%; /* Aumento del tamaño de fuente */
-    border-bottom: 2px solid green; /* Línea debajo de color verde */
+    border-bottom: 2px solid white; /* Línea debajo de color verde */
 }
 
 .estilo-tf {
     font-weight: bold; /* Negrita */
     font-size: 200%; /* Aumento del tamaño de fuente */
-     /* Línea debajo de color verde */
+    border-bottom: 2px solid white; /* Línea debajo de color verde */
 }
 
 .bg-verde {
@@ -35,7 +35,7 @@ h1, h2, h3 {
 }
 
 .btn:hover {
-    opacity: 0.9; /* Efecto al pasar el mouse */
+    opacity: 0.9;
 }
 
 .form-control {
@@ -46,4 +46,17 @@ h1, h2, h3 {
 .nav-item-link:hover {
     background-color: #033d33; /* Color de fondo al pasar el cursor */
     color: #ffffff; /* Color del texto al pasar el cursor */
+}
+
+.nombre-capitan {
+    color: green;
+
+    font-weight: bold;
+    font-size:1.4rem;
+    
+}
+
+.estilo-cabecera {
+    background-color: black;
+    color: white;
 }

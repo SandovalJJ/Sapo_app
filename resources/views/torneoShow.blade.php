@@ -44,6 +44,7 @@
             <li class="nav-item">
                 <a class="nav-link fw-semibold nav-item-link" href="\admin" style="color: white; font-size: 25px">Torneos</a>
             </li>
+            @auth
             <li class="nav-item">
                 <a class="nav-link fw-semibold nav-item-link" href="/participantes" style="color: white; font-size: 25px">Solicitudes</a>
             </li>
@@ -51,21 +52,21 @@
                 <a class="nav-link fw-semibold nav-item-link" href="/aceptados" style="color: white; font-size: 25px">Participantes</a>
             </li>
             <li class="nav-item ms-auto">
-                @auth
+                
                     <form id="logout-form" action="/logout" method="post" style="display: none;">
                         @csrf
                         <button type="submit" id="logout-button"></button>
                     </form>
 
                     <a href="#" class="nav-link fw-semibold me-auto nav-item-link" onclick="document.getElementById('logout-button').click();" style="color: white; font-size: 25px;">Cerrar sesión</a>
-                    @else
-
             </li>
+            @else
             <li class="nav-item">
                 <a class="nav-link fw-semibold nav-item-link " href="/login" style="color: white; font-size: 25px">Iniciar sesión</a>
             </li>
+            @endauth
           </ul>
-          @endauth
+          
     </nav>
         @extends('layouts.app')
 
@@ -77,7 +78,7 @@
                     
                     <div class="card-body">
                         
-                        <p style="font-size: 30px; color: green; font-weight: bold;">Torneo {{ $torneo->nombre }} de sapo - Coopserp</p>
+                        <p style="font-size: 30px; color: green; font-weight: bold;">Torneo {{ $torneo->nombre }} de SAPO - Coopserp</p>
     
                         <div class="container" >
                             @auth
@@ -96,25 +97,35 @@
         <div class="container mt-3">
             <div class="row">
                 @foreach ($equipos as $equipo)
-                    <!-- Each card takes up 4 columns on large screens, 6 columns on medium screens, and full width on small screens -->
                     <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                         <div class="card" style="width: 100%;">
-                            <div class="card-body">
+                            <div style="background-color: black; color: white; border-top-left-radius: .5rem; border-top-right-radius: .5rem; padding: 10px;">
+                            
+                                
                                 @auth
-                                <a href="{{ route('participantes', ['id_equipo' => $equipo->id_equipo]) }}" class="text-success text-decoration-none estilo-td mb-3">
+                                <a href="{{ route('participantes', ['id_equipo' => $equipo->id_equipo]) }}" class="text-light text-decoration-none estilo-td mb-3">
                                     Equipo: {{$equipo->id_equipo}}
                                 </a>
                                @else
-                                <p  class="text-success text-decoration-none estilo-tf mb-3">
+                                <p  class="text-light text-decoration-none estilo-tf mb-3">
                                     Equipo: {{$equipo->id_equipo}}
                                 </p>
                                 @endauth
-                                <h6 class="card-subtitle mb-2 text-body-secondary mt-2 fw-bold fs-4">Puntos: {{$equipo->puntos}}</h6>
+                                <h6 class="card-light mb-2 text-body-light mt-2 fw-bold fs-4">Puntos: {{$equipo->puntos}}</h6>
+                            </div>
+                                <div class="card-body">
                                 <div style="text-align: center;">
                                     @foreach ($equipo->participantes as $participante)
-                                        {{ $participante->nombre }} {{ $participante->apellido }} <br>
-                                    @endforeach
-                                    <button class="btn btn-dark mt-3 " data-bs-target="#exampleModalToggle{{ $equipo->id_equipo }}" data-bs-toggle="modal"><i class="fa-solid fa-crown"></i><strong> CAPITÁN</strong></button>
+                                    @php
+                                        $esCapitan = $equipo->capitan == $participante->cedula;
+                                    @endphp
+                                    <div class="{{ $esCapitan ? 'nombre-capitan' : '' }}">
+                                        {{ $participante->nombre }} {{ $participante->apellido }}
+                                    </div>
+                                @endforeach
+                                    <button class="btn btn-dark mt-3" data-bs-target="#exampleModalToggle{{ $equipo->id_equipo }}" data-bs-toggle="modal" @if($equipo->capitan) disabled @endif>
+                                        <i class="fa-solid fa-crown"></i><strong> CAPITÁN</strong>
+                                    </button>
                                 </div>
                                 <div class="modal fade" id="exampleModalToggle{{ $equipo->id_equipo }}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
@@ -127,18 +138,17 @@
                                             
                                         <div class="modal-body">
                                             
-                                            <form action="  " method="POST">
+                                            <form action="{{ route('asignar.capitan') }}" method="POST">
                                                 @csrf
-
-
-
                                                 <select class="form-select" name="participante_id" aria-label="Select example">
                                                     @foreach($equipo->participantes as $participante)
                                                         <option value="{{ $participante->cedula }}">{{ $participante->nombre }} {{ $participante->apellido }}</option>
                                                     @endforeach
                                                 </select>
+                                                <input type="hidden" name="equipo_id" value="{{ $equipo->id_equipo }}">
                                                 <button type="submit" class="btn btn-success mt-3 fw-bold">Asignar capitán</button>
-                                            </form>                                                        
+                                            </form>
+                                            
                                         </div>
                                     </div>                                                  
                                 </div>                                                
@@ -149,11 +159,8 @@
                 @endforeach
             </div>
         </div>
-
                         </div>
                         <br>
-                           
-
                     </div>
                 </div>
             </div>
@@ -180,23 +187,6 @@
             });
         </script>
         @endsection
-        
-    
-     
-
-
-
-           
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
 </html>
-
-
-
-
-<div>
-
-
-
-</div>

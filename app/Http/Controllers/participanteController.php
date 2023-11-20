@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Equipo;
 use Illuminate\Http\Request;
 use App\Models\Participante;
+use App\Models\User;
+
 
 
 class participanteController extends Controller
@@ -109,22 +111,29 @@ public function guardarPuntos(Request $request)
     return redirect()->back()->with('success', 'Puntos actualizados con éxito');
 }
 
-public function asignarCapitan(Request $request, $idParticipante)
+
+public function asignarCapitan(Request $request)
 {
-    $participante = Participante::findOrFail($idParticipante);
-    $idEquipo = $participante->fk_id_equipo;
+    $equipoId = $request->input('equipo_id');
+    $participanteId = $request->input('participante_id');
 
-    // Verificar que ningún otro miembro del equipo sea capitán
-    if (Participante::where('fk_id_equipo', $idEquipo)->where('capitan', true)->exists()) {
-        return back()->with('error', 'Este equipo ya tiene un capitán.');
-    }
+    // Actualizar la columna capitan en la tabla equipo
+    Equipo::where('id_equipo', $equipoId)->update(['capitan' => $participanteId]);
 
-    // Asignar como capitán
-    $participante->capitan = true;
-    $participante->save();
+    // Crear o actualizar un usuario en la tabla users
+    User::updateOrCreate(
+        ['name' => $participanteId], // Buscar por el nombre (cedula)
+        [
+            'name' => $participanteId, 
+            'password' => bcrypt($participanteId), // Encriptar la cédula para la contraseña
+            'rol' => 'capitan'
+        ]
+    );
 
-    return back()->with('success', 'Capitán asignado correctamente.');
+    // Redirigir de vuelta con un mensaje de éxito
+    return redirect()->back()->with('success', 'Capitán asignado correctamente.');
 }
+
 
 
 

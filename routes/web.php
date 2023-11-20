@@ -57,7 +57,6 @@ Route::get('/aceptados', function () {
 });
 
 //  RUTAS DEL PARTICIPANTE
-
 Route::post('/guardar-puntos', [ParticipanteController::class, 'guardarPuntos'])->name('guardar-puntos');
 Route::post('/aceptar-participante/{id}', [participanteController::class, 'aceptar'])->name('participante.aceptar');
 Route::post('/rechazar-participante/{id}', [participanteController::class, 'rechazar'])->name('participante.rechazar');
@@ -82,7 +81,6 @@ Route::post('/remover-participante', [equipoController::class, 'removerParticipa
 
 
 //RUTAS ENFRENTAMIENTO
-
 Route::get('/enfrentamientos/{id}', [enfrentamientoController::class, 'mostrarEnfrentamiento'])->name('enfrentamientos.show');
 Route::get('/crear-enfrentamientos/{id_torneo}', [enfrentamientoController::class, 'crearEnfrentamientos'])->name('crear_enfrentamientos');
 Route::post('/enfrentamientos/{id_enfrentamiento}/guardar', [enfrentamientoController::class, 'guardarResultados'])->name('guardar.resultados');
@@ -91,9 +89,7 @@ Route::post('/enfrentamientos/{id_enfrentamiento}/determinar-ganador', [Enfrenta
 
 
 
-// pruebas
+// ASIGNAR CAPITANES--
+Route::post('/asignar-capitan', [participanteController::class, 'asignarCapitan'])->name('asignar.capitan');
 
 
-Route::get('/torneo/{id_torneo}/capitanes', [equipoController::class, 'capitanes'])->name('capitanes');
-Route::post('/torneo/{id_torneo}/equipo/{id_equipo}/modificar-capitan', [EquipoController::class, 'modificarCapitan'])
-    ->name('modificar-capitan');
