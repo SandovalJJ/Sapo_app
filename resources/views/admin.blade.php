@@ -66,7 +66,7 @@
                         @auth
                                                             <!-- Botón para abrir el modal -->
                         <button type="button" class="btn btn-success", data-bs-toggle="modal" data-bs-target="#crearTorneoModal">
-                            Crear Torneo
+                            CREAR TORNEO
                         </button>
                         
                         <!-- Modal para crear torneo -->
