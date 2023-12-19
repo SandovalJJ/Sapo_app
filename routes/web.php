@@ -39,7 +39,7 @@ Route::get('/admin', function () {
 
 //RUTAS DE LOG IN
 Route::post('/login2',[UserController::class, 'login2'])->name('iniciar');
-Route::post('/register', [UserControllerller::class, 'register']);
+Route::post('/register', [UserController::class, 'register']);
 Route::post('/logout',[UserController::class, 'logout']);
 
 
@@ -70,7 +70,7 @@ Route::get('/torneo/{id_torneo}/', [torneoController::class, 'show'])->name('tor
 Route::post('/create-torneo', [torneoController::class, 'createTorneo']);
 Route::get('/crear-equipos-azar', [torneoController::class, 'crearEquiposAlAzar'])->name('crear_equipos_azar');
 Route::get('/torneo/{id_torneo}/equipos', [torneoController::class, 'equipos'])->name('equipos');
-Route::get('/enfrentamientos/{id}', [TorneoController::class, 'mostrarEnfrentamientos']);
+
 
 //RUTAS DE EQUIPOS
 Route::get('/generar-equipos/{id_torneo}', [equipoController::class, 'generarEquipos'])->name('generar.equipos');
@@ -79,7 +79,7 @@ Route::post('/asignar-participante', [equipoController::class, 'asignarParticipa
 Route::post('/remover-participante', [equipoController::class, 'removerParticipante'])->name('remover.participante');
 
 
-
+Route::get('/enfrentamientos/{id}', [TorneoController::class, 'mostrarEnfrentamientos']);
 //RUTAS ENFRENTAMIENTO
 Route::get('/enfrentamientos/{id}', [enfrentamientoController::class, 'mostrarEnfrentamiento'])->name('enfrentamientos.show');
 Route::get('/crear-enfrentamientos/{id_torneo}', [enfrentamientoController::class, 'crearEnfrentamientos'])->name('crear_enfrentamientos');

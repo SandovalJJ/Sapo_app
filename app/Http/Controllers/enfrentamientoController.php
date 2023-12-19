@@ -41,6 +41,19 @@ public function crearEnfrentamientos($id_torneo) {
     $torneo = Torneo::find($id_torneo);
     // Aquí aseguramos que solo seleccionemos equipos calificados
     $equipos = Equipo::where('fk_id_torneo', $id_torneo)->where('estado_equipo', 'CALIFICADO')->get();
+
+    // Verificar si alguno de los equipos ya tiene un enfrentamiento
+    $equiposConEnfrentamiento = Enfrentamiento::whereHas('equipoLocal', function($query) use ($id_torneo) {
+        $query->where('fk_id_torneo', $id_torneo);
+    })->orWhereHas('equipoVisitante', function($query) use ($id_torneo) {
+        $query->where('fk_id_torneo', $id_torneo);
+    })->get();
+
+    if ($equiposConEnfrentamiento->isNotEmpty()) {
+        // Aquí puedes personalizar la respuesta de error
+        session()->flash('error', 'No se pueden crear más enfrentamientos, ya existen partidos programados.');
+        return redirect()->back();
+    }
     
     // Aleatorizar la lista de equipos
     $equiposAleatorios = $equipos->shuffle();

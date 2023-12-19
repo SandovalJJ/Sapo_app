@@ -24,13 +24,10 @@ class participanteController extends Controller
         $existingParticipante = Participante::where('cedula', $incomingFields['cedula'])->first();
 
     if ($existingParticipante) {
-        // Si se encuentra un participante con la misma cédula, redirige con un mensaje de error
         return redirect()->back()->with('error', 'La cédula ya existe. Introduce una cédula única.');
     }
 
-    // Si no existe un participante con la misma cédula, crea el nuevo participante
     Participante::create($incomingFields);
-
     return redirect('/');
 }
 
@@ -60,9 +57,7 @@ public function rechazar($cedula)
     $participante->update(['estado' => 'rechazado']);
     return redirect('/participantes');
 }
-
-// --------------------------
-
+//metodos para aceptar o rechazar registros
 public function aceptarRegistro($cedula)
 {
     $participante = Participante::find($cedula);
@@ -74,18 +69,16 @@ public function aceptarRegistro($cedula)
 
 public function rechazarRegistro($cedula)
 {
-
     $participante = Participante::find($cedula);
     if (!$participante) {
     }
     $participante->update(['estado' => 'rechazado']);
     return redirect('/aceptados');
 }
-
+//metodo para guardar puntos
 public function guardarPuntos(Request $request)
 {
     $puntos = $request->input('puntos');
-
     foreach ($puntos as $participanteId => $nuevosPuntos) {
         $participante = Participante::find($participanteId);
 
@@ -95,13 +88,9 @@ public function guardarPuntos(Request $request)
         }
     }
 
-    // Obtener el equipo al que pertenecen los participantes
     $equipoId = $participante->fk_id_equipo;
-
-    // Calcular la suma de los puntos de los participantes del equipo
     $sumaPuntos = Participante::where('fk_id_equipo', $equipoId)->sum('puntos');
 
-    // Actualizar el atributo de puntos del equipo con la suma calculada
     $equipo = Equipo::find($equipoId);
     if ($equipo) {
         $equipo->puntos = $sumaPuntos;
@@ -111,26 +100,20 @@ public function guardarPuntos(Request $request)
     return redirect()->back()->with('success', 'Puntos actualizados con éxito');
 }
 
-
+//metodo para asignar un capitan automaticamente
 public function asignarCapitan(Request $request)
 {
     $equipoId = $request->input('equipo_id');
     $participanteId = $request->input('participante_id');
-
-    // Actualizar la columna capitan en la tabla equipo
     Equipo::where('id_equipo', $equipoId)->update(['capitan' => $participanteId]);
-
-    // Crear o actualizar un usuario en la tabla users
     User::updateOrCreate(
-        ['name' => $participanteId], // Buscar por el nombre (cedula)
+        ['name' => $participanteId],
         [
             'name' => $participanteId, 
-            'password' => bcrypt($participanteId), // Encriptar la cédula para la contraseña
+            'password' => bcrypt($participanteId),
             'rol' => 'capitan'
         ]
     );
-
-    // Redirigir de vuelta con un mensaje de éxito
     return redirect()->back()->with('success', 'Capitán asignado correctamente.');
 }
 

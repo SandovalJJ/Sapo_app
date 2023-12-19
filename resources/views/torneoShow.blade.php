@@ -8,11 +8,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
     <script src="https://kit.fontawesome.com/056e693a0d.js" crossorigin="anonymous"></script>
     <link href="{{ asset('css/estilos.css') }}" rel="stylesheet">
-
-
   </head>
   <body>
-
     @if(session('participantesRestantes'))
         <div class="p-3 mb-2 bg-warning-subtle text-emphasis-warning">
             <h4>Participantes que no pudieron ser asignados a un equipo:</h4>
@@ -23,10 +20,12 @@
             </ul>
         </div>
     @endif
-
-
+    @if(session('error'))
+    <div class="p-3 mb-2 bg-warning-subtle text-emphasis-warning">
+        {{ session('error') }}
+    </div>
+    @endif
     <nav class="navbar navbar-expand-lg p-3" style="background-color: #005e56">
-
         <a class="navbar-brand">
             <img style="filter: drop-shadow(0 2px 0.8px white);" src="{{ asset('img/LogoCoopserp2014-PNG.png') }}" alt="Descripción de la imagen" width="140" height="60">
           </a>
