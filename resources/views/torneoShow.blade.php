@@ -69,46 +69,42 @@
           
     </nav>
         @extends('layouts.app')
-
         @section('content')
-
         <div class="card-body">
             <div style="border: 1px solid green; padding: 10px; margin: 10px auto; text-align: center;" class="m-3">
                 <div class="card">
-                    
                     <div class="card-body">
-                        
                         <p style="font-size: 30px; color: green; font-weight: bold;">Torneo {{ $torneo->nombre }} de SAPO - Coopserp</p>
-    
                         <div class="container" >
                             @auth
                             <div style="display: flex; justify-content: center; align-items: center;">
-                                <a href="{{ route('enfrentamientos.show', ['id' => request()->route('id_torneo')]) }}" class="btn btn-warning me-3 pd-3">Enfrentamientos</a>
                                 
-                                <a href="{{ route('generar.equipos', ['id_torneo' => request()->route('id_torneo')]) }}" class="btn btn-warning me-3 pd-3">Generar equipos</a>
+                                
+                                <a href="{{ route('generar.equipos', ['id_torneo' => request()->route('id_torneo')]) }}" style="background-color: #005e56; color: white" class="btn me-3 pd-3">Generar equipos</a>
                                 
                                 <form action="{{ route('crear_enfrentamientos', ['id_torneo' => $torneo->id_torneo]) }}" method="GET">
                                     @csrf
-                                    <button type="submit" class="btn btn-warning">Generar enfrentamientos</button>
+                                    <button type="submit" style="background-color: #005e56; color: white" class="btn">Generar enfrentamientos</button>
                                 </form>
+                                <a href="{{ route('enfrentamientos.show', ['id' => request()->route('id_torneo')]) }}" style="background-color: #005e56; color: white" class="btn me-3 pd-3 ms-3">Enfrentamientos</a>
                             </div>
                             @endauth
-                            
         <div class="container mt-3">
             <div class="row">
+                @php
+                $contador = 1;
+                @endphp
                 @foreach ($equipos as $equipo)
                     <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                         <div class="card" style="width: 100%;">
-                            <div style="background-color: black; color: white; border-top-left-radius: .5rem; border-top-right-radius: .5rem; padding: 10px;">
-                            
-                                
+                            <div style="background-color: #005e56; color: white; border-top-left-radius: .5rem; border-top-right-radius: .5rem; padding: 10px;">
                                 @auth
                                 <a href="{{ route('participantes', ['id_equipo' => $equipo->id_equipo]) }}" class="text-light text-decoration-none estilo-td mb-3">
-                                    Equipo: {{$equipo->id_equipo}}
+                                    Equipo: {{$contador}}
                                 </a>
                                @else
                                 <p  class="text-light text-decoration-none estilo-tf mb-3">
-                                    Equipo: {{$equipo->id_equipo}}
+                                    Equipo: {{$contador}}
                                 </p>
                                 @endauth
                                 <h6 class="card-light mb-2 text-body-light mt-2 fw-bold fs-4">Puntos: {{$equipo->puntos}}</h6>
@@ -133,11 +129,8 @@
                                         <div class="modal-header">
                                           <h1 class="modal-title fs-5" id="exampleModalToggleLabel">ASIGNAR CAPITÁN DEL EQUIPO</h1>                                                   
                                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                          
                                         </div>
-                                            
                                         <div class="modal-body">
-                                            
                                             <form action="{{ route('asignar.capitan') }}" method="POST">
                                                 @csrf
                                                 <select class="form-select" name="participante_id" aria-label="Select example">
@@ -156,6 +149,9 @@
                             </div>
                         </div>
                     </div>
+                    @php
+    $contador++;
+    @endphp
                 @endforeach
             </div>
         </div>
@@ -165,11 +161,7 @@
                 </div>
             </div>
         </div>
-
-        
-
         @endsection
-        
         @section('css')
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">

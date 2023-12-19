@@ -52,10 +52,8 @@
         </li>
         @endauth
       </ul>
-      
 </nav>
             @extends('layouts.app')
-
             @section('content')
             @auth
             <div class="card-body">
@@ -64,7 +62,6 @@
                         <div class="card-body table-responsive">
                             <form action="{{ route('guardar-puntos') }}" method="POST">
                                 @csrf
-                                
                             <table id="participantes" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
@@ -75,8 +72,6 @@
                                         <th>Correo</th>
                                         <th>Agencia</th>
                                         <th>Puntos</th>
-                                        <th>Estado</th>
-                                        <th>Equipo</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -90,25 +85,13 @@
                                             <td>{{$participante->agencia}}</td>
                                             <td>
                                                 <input type="text" class="form-control" value="{{ $participante->puntos }}" name="puntos[{{ $participante->cedula }}]">
-
-
                                             </td>
-                                            
-                                            <td>{{$participante->estado}}</td>
-                                            <td>{{$participante->fk_id_equipo}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                                 </table>
-                                
-                                    <table id="participantes" class="table table-striped" style="width:100%">
-                                       <!-- ... (tu tabla) ... -->
-                                    </table>
                                     <button type="submit" class="btn btn-success"><Strong>Guardar</Strong></button>
-                                 </form>
-                                        
-
-                                    
+                                 </form> 
                                  <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
                                       <div class="modal-content">
@@ -117,14 +100,10 @@
                                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                           
                                         </div>
-                                            
                                         <div class="modal-body">
-                                            
                                             <form action="{{ route('remover.participante') }}" method="POST">
                                                 @csrf
-
                                                 <input type="hidden" name="equipo_id" value="{{ $id_equipo }}">
-
                                                 <select class="form-select" name="participante_id" aria-label="Select example">
                                                     @foreach($participantes as $integrante)
                                                         <option value="{{ $integrante->cedula }}">{{ $integrante->nombre }} {{ $integrante->apellido }}</option>
@@ -133,9 +112,7 @@
                                                 <button type="submit" class="btn btn-danger mt-3">Eliminar participante</button>
                                             </form>                                                        
                                         </div>
-
                                             <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Opción agregar participante</button>                                                   
-                                            
                                             </div>                                                  
                                             </div>                                                
                                         </div>
@@ -147,10 +124,8 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    
                                                     <form action="{{ route('asignar.participante') }}" method="POST">
                                                         @csrf
-
                                                         <input type="hidden" name="equipo_id" value="{{ $id_equipo }}">
                                                         <select class="form-select" name="participante_id" aria-label="Select example">
                                                             @foreach($participantesSinEquipo as $participante)
@@ -159,39 +134,27 @@
                                                         </select>
                                                         <button type="submit" class="btn btn-success mt-3">Agregar participante</button>
                                                     </form>                                                                                                          
-                                                
                                                 </div>
                                                 <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Volver a la opción eliminar</button>
                                             </div>
                                             </div>
                                         </div>
                                   <button class="btn btn-success mt-3 " data-bs-target="#exampleModalToggle" data-bs-toggle="modal"><i class="bi bi-pencil-square"></i><strong>Editar</strong></button>
-
-
                                   @endauth
-
                         </div>
                     </div>
                 </div>
             </div>
             @endsection
-        
         @section('css')
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
         @endsection
-        
         @section('js')
         <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
         @endsection
-        
-
-     
-
-          
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>       
   </body>
 </html>
